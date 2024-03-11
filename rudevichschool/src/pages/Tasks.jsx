@@ -61,13 +61,13 @@ const About = () => {
               value={post.title}
               onChange={(e) => setPost({ ...post, title: e.target.value })}
               type="text"
-              placeholder="Название задачи"
+              placeholder="Задача"
             />
             <MyInput
               value={post.body}
               onChange={(e) => setPost({ ...post, body: e.target.value })}
               type="text"
-              placeholder="Описание задачи"
+              placeholder="Описание"
             />
             <MyButton onClick={addNew}>Создать</MyButton>
           </form>

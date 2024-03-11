@@ -6,12 +6,37 @@ export default class PostService {
     return data;
   }
 
+  static async getQuestions() {
+    const { data } = await axios.get(
+      "http://localhost:5262/Questions/getQuestions"
+    );
+    return data;
+  }
+
   static async addTask(task) {
     await axios.post("http://localhost:5262/Tasks/addTask", task);
   }
 
+  static async addQuestion(question) {
+    await axios.post("http://localhost:5262/Questions/addQuestion", {
+      ...question,
+      answer: "",
+    });
+  }
+
+  static async answerQuestion(question) {
+    await axios.post(
+      "http://localhost:5262/Questions/updateQuestion",
+      question
+    );
+  }
+
   static async deleteTask(id) {
     await axios.delete(`http://localhost:5262/Tasks/deleteTask/${id}`);
+  }
+
+  static async deleteQuestion(id) {
+    await axios.delete(`http://localhost:5262/Questions/deleteQuestion/${id}`);
   }
 
   static async doneTask(id) {

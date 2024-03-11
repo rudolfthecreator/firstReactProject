@@ -12,6 +12,8 @@ public partial class ReactDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Question> Questions { get; set; }
+
     public virtual DbSet<Task> Tasks { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -19,6 +21,27 @@ public partial class ReactDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Question>(entity =>
+        {
+            entity.HasKey(e => e.QuestionId).HasName("questions_pkey");
+
+            entity.ToTable("questions");
+
+            entity.Property(e => e.QuestionId)
+                .UseIdentityAlwaysColumn()
+                .HasColumnName("question_id");
+            entity.Property(e => e.Answer)
+                .HasMaxLength(400)
+                .HasDefaultValueSql("''::bpchar")
+                .IsFixedLength()
+                .HasColumnName("answer");
+            entity.Property(e => e.Question1)
+                .HasMaxLength(100)
+                .HasDefaultValueSql("''::bpchar")
+                .IsFixedLength()
+                .HasColumnName("question");
+        });
+
         modelBuilder.Entity<Task>(entity =>
         {
             entity.HasKey(e => e.TaskId).HasName("tasks_pkey");
