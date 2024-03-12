@@ -13,6 +13,13 @@ export default class PostService {
     return data;
   }
 
+  static async getAnswers() {
+    const { data } = await axios.get(
+      "http://localhost:5262/Questions/getAnswers"
+    );
+    return data;
+  }
+
   static async addTask(task) {
     await axios.post("http://localhost:5262/Tasks/addTask", task);
   }
@@ -29,6 +36,10 @@ export default class PostService {
       "http://localhost:5262/Questions/updateQuestion",
       question
     );
+  }
+
+  static async updateCount(question) {
+    await axios.post("http://localhost:5262/Questions/updateCount", question);
   }
 
   static async deleteTask(id) {

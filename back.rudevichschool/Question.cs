@@ -5,9 +5,11 @@ namespace back.rudevichschool;
 
 public partial class Question
 {
-    public int QuestionId { get; set; }
+    public int QId { get; set; }
 
-    public string Question1 { get; set; } = null!;
+    public string Quest { get; set; } = null!;
 
     public string Answer { get; set; } = null!;
+
+    public int? Count { get; set; }
 }

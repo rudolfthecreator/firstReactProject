@@ -23,23 +23,24 @@ public partial class ReactDbContext : DbContext
     {
         modelBuilder.Entity<Question>(entity =>
         {
-            entity.HasKey(e => e.QuestionId).HasName("questions_pkey");
+            entity.HasKey(e => e.QId).HasName("questions_pkey");
 
             entity.ToTable("questions");
 
-            entity.Property(e => e.QuestionId)
+            entity.Property(e => e.QId)
                 .UseIdentityAlwaysColumn()
-                .HasColumnName("question_id");
+                .HasColumnName("q_id");
             entity.Property(e => e.Answer)
-                .HasMaxLength(400)
-                .HasDefaultValueSql("''::bpchar")
-                .IsFixedLength()
+                .HasMaxLength(1000)
+                .HasDefaultValueSql("''::character varying")
                 .HasColumnName("answer");
-            entity.Property(e => e.Question1)
+            entity.Property(e => e.Count)
+                .HasDefaultValue(0)
+                .HasColumnName("count");
+            entity.Property(e => e.Quest)
                 .HasMaxLength(100)
-                .HasDefaultValueSql("''::bpchar")
-                .IsFixedLength()
-                .HasColumnName("question");
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnName("quest");
         });
 
         modelBuilder.Entity<Task>(entity =>
@@ -50,9 +51,8 @@ public partial class ReactDbContext : DbContext
 
             entity.Property(e => e.TaskId).HasColumnName("task_id");
             entity.Property(e => e.Body)
-                .HasMaxLength(255)
-                .HasDefaultValueSql("''::bpchar")
-                .IsFixedLength()
+                .HasMaxLength(200)
+                .HasDefaultValueSql("''::character varying")
                 .HasColumnName("body");
             entity.Property(e => e.Done)
                 .HasDefaultValue(false)
@@ -62,8 +62,7 @@ public partial class ReactDbContext : DbContext
                 .HasColumnName("priority");
             entity.Property(e => e.Title)
                 .HasMaxLength(100)
-                .HasDefaultValueSql("''::bpchar")
-                .IsFixedLength()
+                .HasDefaultValueSql("''::character varying")
                 .HasColumnName("title");
         });
 

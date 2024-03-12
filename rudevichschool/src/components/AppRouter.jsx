@@ -4,7 +4,8 @@ import { AuthContext } from "../context";
 import Loader from "./UI/Loader/Loader";
 import Error from "../pages/Error";
 import Tasks from "../pages/Tasks";
-import Learning from "../pages/Learning";
+import Questions from "../pages/Questions";
+import Answers from "../pages/Answers";
 
 const AppRouter = () => {
   const { isAuth, isLoading } = useContext(AuthContext);
@@ -15,8 +16,10 @@ const AppRouter = () => {
 
   return (
     <Routes>
+      <Route path="/" element={<Tasks />} />
       <Route path="/tasks" element={<Tasks />} />
-      <Route path="/learning" element={<Learning />} />
+      <Route path="/questions" element={<Questions />} />
+      <Route path="/answers" element={<Answers />} />
       <Route path="*" element={<Error />} />
     </Routes>
   );

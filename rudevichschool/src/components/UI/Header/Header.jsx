@@ -19,7 +19,8 @@ const Header = () => {
             </MyButton> */}
       <div className="header__links">
         <Link to="/tasks">Задачи</Link>
-        <Link to="/learning">Библиотека</Link>
+        <Link to="/questions">Вопросы</Link>
+        <Link to="/answers">Ответы</Link>
       </div>
     </div>
   );

@@ -14,7 +14,14 @@ namespace back.rudevichschool.Controllers
         [HttpGet("getQuestions")]
         public List<Question> GetQuestions()
         {
-            var res = _context.Questions.OrderBy(o => o.QuestionId).ToList();
+            var res = _context.Questions.OrderBy(o => o.Answer.Length).ThenBy(o => o.QId).ToList();
+            return res;
+        }
+
+        [HttpGet("getAnswers")]
+        public List<Question> GetAnswers()
+        {
+            var res = _context.Questions.Where(w=>w.Answer.Length>0).OrderByDescending(o => o.Count).ThenBy(o => o.QId).ToList();
             return res;
         }
 
@@ -29,12 +36,26 @@ namespace back.rudevichschool.Controllers
         [HttpPost("updateQuestion")]
         public async Task<ActionResult> UpdateQuestion(Question question)
         {
-            Question? item = await _context.Questions.FirstOrDefaultAsync(w => w.QuestionId == question.QuestionId);
+            Question? item = await _context.Questions.FirstOrDefaultAsync(w => w.QId == question.QId);
 
             if (item != null)
             {
-                item.Question1 = question.Question1;
+                item.Quest = question.Quest;
                 item.Answer = question.Answer;
+                await _context.SaveChangesAsync();
+            }
+            return Ok();
+
+        }
+
+        [HttpPost("updateCount")]
+        public async Task<ActionResult> updateCount(Question question)
+        {
+            Question? item = await _context.Questions.FirstOrDefaultAsync(w => w.QId == question.QId);
+
+            if (item != null)
+            {
+                item.Count = question.Count+1;
                 await _context.SaveChangesAsync();
             }
             return Ok();
@@ -46,7 +67,7 @@ namespace back.rudevichschool.Controllers
         [HttpDelete("deleteQuestion/{id}")]
         public async Task<ActionResult> DeleteQuestion(int id)
         {
-            Question? item = await _context.Questions.FirstOrDefaultAsync(w => w.QuestionId == id);
+            Question? item = await _context.Questions.FirstOrDefaultAsync(w => w.QId == id);
             
             if (item!=null) {
                 _context.Questions.Remove(item);

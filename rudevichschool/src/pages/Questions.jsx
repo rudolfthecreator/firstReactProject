@@ -6,10 +6,10 @@ import MyToggle from "../components/UI/toggle/MyToggle";
 import MyInput from "../components/UI/input/MyInput";
 import Loader from "../components/UI/Loader/Loader";
 
-const Learning = () => {
+const Questions = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [question, setQuestion] = useState({ question1: "", answer: "" });
+  const [question, setQuestion] = useState({ quest: "", answer: "" });
 
   const items = async () => {
     setLoading(true);
@@ -21,7 +21,7 @@ const Learning = () => {
   const addNew = async (e) => {
     e.preventDefault();
     await PostService.addQuestion(question);
-    setQuestion({ question1: "", answer: "" });
+    setQuestion({ quest: "", answer: "" });
     items();
   };
 
@@ -33,13 +33,17 @@ const Learning = () => {
 
   const answerOne = async (e, question) => {
     e.preventDefault();
-    setQuestion(question);
+    setQuestion({
+      ...question,
+      answer: question.answer.length > 0 ? question.answer : " ",
+    });
   };
 
   const addAnswer = async (e) => {
     e.preventDefault();
+    console.log(question.answer.length);
     await PostService.answerQuestion(question);
-    setQuestion({ question1: "", answer: "" });
+    setQuestion({ quest: "", answer: "" });
     items();
   };
 
@@ -55,44 +59,48 @@ const Learning = () => {
         <div className="tasks__container">
           <form>
             <MyInput
-              value={question.question1}
+              value={question.quest}
               onChange={(e) =>
-                setQuestion({ ...question, question1: e.target.value })
+                setQuestion({ ...question, quest: e.target.value })
               }
               type="text"
               placeholder="Вопрос"
             />
-            <MyInput
-              value={question.answer}
-              onChange={(e) =>
-                setQuestion({ ...question, answer: e.target.value })
-              }
-              type="text"
-              placeholder="Ответ"
-            />
+            {question.answer && (
+              <MyInput
+                value={question.answer}
+                onChange={(e) =>
+                  setQuestion({ ...question, answer: e.target.value })
+                }
+                type="text"
+                placeholder="Ответ"
+              />
+            )}
             <MyButton onClick={addNew}>Создать</MyButton>
-            <MyButton onClick={addAnswer}>Сохранить</MyButton>
+            {question.answer && (
+              <MyButton onClick={addAnswer}>Ответить</MyButton>
+            )}
           </form>
           {questions.length ? (
             questions.map((q, index) => (
-              <div key={q.questionId}>
+              <div key={q.qId}>
                 <h2>
-                  {index + 1}. {q.question1}
+                  {index + 1}. {q.quest}
                 </h2>
                 <h4>{q.answer}</h4>
-                <MyButton onClick={(e) => deleteOne(e, q.questionId)}>
+                <MyButton onClick={(e) => deleteOne(e, q.qId)}>
                   Удалить
                 </MyButton>
                 <MyButton
                   onClick={(e) =>
                     answerOne(e, {
-                      question1: q.question1,
+                      quest: q.quest,
                       answer: q.answer,
-                      questionId: q.questionId,
+                      qId: q.qId,
                     })
                   }
                 >
-                  Ответить
+                  Ред.
                 </MyButton>
               </div>
             ))
@@ -105,4 +113,4 @@ const Learning = () => {
   );
 };
 
-export default Learning;
+export default Questions;
